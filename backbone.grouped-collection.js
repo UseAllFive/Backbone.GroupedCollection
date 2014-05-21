@@ -1,15 +1,21 @@
 /*jshint indent:2 */
-(function (global) {
+(function (global, factory) {
 
-  var Backbone = global.Backbone,
-      Lib = {},
-      _ = global._;
+  // Set up lib appropriately for the environment. Start with AMD.
+  if (typeof define === 'function' && define.amd) {
+    define(['underscore', 'backbone'], factory);
 
-  if ((!_  || !Backbone) && (typeof require !== 'undefined')) {
-    _ = require('underscore');
-    Backbone = require('backbone');
+  // Next for Node.js or CommonJS.
+  } else if (typeof module !== 'undefined' && module.exports) {
+    module.exports = factory(require('underscore'), require('backbone'));
+
+  // Finally, use browser globals.
+  } else {
+    factory(global._, global.Backbone);
   }
 
+}(this, function (_, Backbone) {
+  Lib = Backbone;
   /**
    * Checks a parameter from the obj
    *
@@ -136,4 +142,4 @@
     module.exports = Lib;
   }
 
-}(this));
+}));
